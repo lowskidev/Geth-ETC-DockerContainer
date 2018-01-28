@@ -1,0 +1,25 @@
+#!/bin/sh
+
+apt update -y &&
+apt upgrade -y &&
+apt install -y build-essential &&
+apt install -y git wget curl nano redis-server nginx software-properties-common python-software-properties &&
+
+curl -sL https://deb.nodesource.com/setup_9.x | bash - &&
+apt-get install -y nodejs &&
+
+add-apt-repository -y ppa:longsleep/golang-backports &&
+apt update -y &&
+apt install -y golang-go &&
+export GOPATH=$HOME/go &&
+ln -s /.ethereum-classic/ $HOME/
+
+cd $HOME/ &&
+go get -v github.com/ethereumproject/go-ethereum/... &&
+cp $HOME/go/bin/geth /usr/local/bin &&
+
+git clone https://github.com/Machete3000/etc-net-intelligence-api etc-net-intelligence-api &&
+cd etc-net-intelligence-api &&
+git pull &&
+npm install &&
+npm install pm2 -g
