@@ -1,9 +1,14 @@
 bakon-etcnode
 Classic Ethereum Geth Node with etc-net-intelligence-api Docker Container
 
-############################################################################################# v.05 - build geth4.2.1 with sputnikVM
+############################################################################################# 
 
-docker pull bakon3/etcnode:v.05 ############################################################################################# v.04 - Updated to geth 4.2.1 Added --sputnikvm to geth run in gethStart.sh file(remove --sputnikvm for Morden Chain) docker pull bakon3/etcnode:v.04
+**v.05** - build geth4.2.1 with sputnikVM
+docker pull bakon3/etcnode:v.05 
+############################################################################################# 
+
+**v.04** - Updated to geth 4.2.1 Added --sputnikvm to geth run in gethStart.sh file(remove --sputnikvm for Morden Chain) 
+docker pull bakon3/etcnode:v.04
 
 New versions now compile GETH from source instead of downloading binary. This way, every time a new version of GETH, comes out instead of waiting for me to update my images you can build from dockerfile :).
 
