@@ -14,7 +14,7 @@ docker pull bakon3/etcnode:v.04
 
 New versions now compile GETH from source instead of downloading binary. This way, every time a new version of GETH, comes out instead of waiting for me to update my images you can build from dockerfile :).
 
-############################################################################################# v.03 - Updated to geth 4.2.0 Added --sputnikvm to geth run in gethStart.sh file )Disable for Morden Chain) #############################################################################################
+############################################################################################# v.03 - Updated to geth 4.2.0 Added --sputnikvm to geth run in gethStart.sh file (Disable for Morden Chain) #############################################################################################
 
 Using the classic go-ethereum client(https://github.com/ethereumproject/go-ethereum). This is a docker container that is designed so you could customize your geth run time before running the container, or even stop the container edit the geth run time and restart it.
 
