@@ -1,23 +1,33 @@
 #!/bin/sh
-
 apt update -y &&
 apt upgrade -y &&
 apt install -y build-essential &&
-apt install -y git wget curl nano redis-server nginx software-properties-common python-software-properties &&
-
+apt install -y git wget curl nano redis-server nginx software-properties-common python-software-properties rustc cargo &&
+#Instal latest nodejs
 curl -sL https://deb.nodesource.com/setup_9.x | bash - &&
 apt-get install -y nodejs &&
-
+#Install laters golang on Ubuntu
 add-apt-repository -y ppa:longsleep/golang-backports &&
 apt update -y &&
 apt install -y golang-go &&
 export GOPATH=$HOME/go &&
 ln -s /.ethereum-classic/ $HOME/
-
+#Download GETH Source
 cd $HOME/ &&
 go get -v github.com/ethereumproject/go-ethereum/... &&
-cp $HOME/go/bin/geth /usr/local/bin &&
-
+#Download sputnikvm build files
+cd $HOME/go/src/github.com/ethereumproject/ &&
+git clone https://github.com/ethereumproject/sputnikvm-ffi &&
+cd sputnikvm-ffi/c/ffi &&
+#Build sputnikvm
+cargo build --release &&
+cp $HOME/go/src/github.com/ethereumproject/sputnikvm-ffi/c/ffi/target/release/libsputnikvm_ffi.a $HOME/go/src/github.com/ethereumproject/sputnikvm-ffi/c/libsputnikvm.a &&
+#Build geth with sputnikvm
+cd $HOME/go/src/github.com/ethereumproject/go-ethereum/cmd/geth &&
+CGO_LDFLAGS="$HOME/go/src/github.com/ethereumproject/sputnikvm-ffi/c/libsputnikvm.a -ldl" go build -tags=sputnikvm . &&
+#copy geth runtime to bin folder
+cp geth /usr/local/bin/ &&
+#download and build PM2 and etc-net-intelligence
 git clone https://github.com/Machete3000/etc-net-intelligence-api etc-net-intelligence-api &&
 cd etc-net-intelligence-api &&
 git pull &&
