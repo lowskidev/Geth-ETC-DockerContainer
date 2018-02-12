@@ -5,7 +5,7 @@ FROM ubuntu:16.04
 COPY install /install
 
 # Geth/Http-RPC/WS-RPC
-EXPOSE 30303 8545 8546 8082 8008 8888 8080
+#EXPOSE 30303 8545 8546 8082 8008 8888 8080
 
 # Define environment variable
 #ENV 
