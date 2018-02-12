@@ -35,9 +35,11 @@ This is done so you can use one image to create containers for Main or Morden ch
 This container is setup to use --mount method during docker run to use host persistent storage for chaindata.
 
 How to use: After the container has finished building, before running it. In your Docker hosts `$HOME` Directory under 
+
 `mkdir -p ~/.ethereum-classic/<dockerGethContainerName>` create a folder with the name for your Geth container instance.
 
-In that folder create two files: 
+In that folder create two files:
+
 `touch startGeth.sh` 
 
 and 
