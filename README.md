@@ -94,3 +94,5 @@ To see what Geth is doing in the container you have a two quick choices. You can
 You can connect to the geth javascript console by either entering the container with geth exec and executing geth attach or geth --chain=morden attach for the test server.
 
 To connect to a containers JS console from the Docker host. You can do so by navigating to the containers mounted directory ~/.ethereum-classic/<Foldername> and executing the command geth attach ipc:geth.ipc Note:You need to have Geth installed on your host machine as well
+  
+Donate ETC:0xc5bbf1ecdeba58013f17c6ede01aab73a17104a4
