@@ -4,7 +4,7 @@ https://github.com/ethereumproject/go-ethereum/releases
 
 ############################################################################################# 
 
-**v.06** - v.06 - Updated to geth4.2.2
+**v.06** - Updated to geth4.2.2
 
 https://github.com/ethereumproject/go-ethereum/releases <-- for change log to Geth
 
