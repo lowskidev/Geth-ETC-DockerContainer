@@ -38,8 +38,10 @@ In that folder create two files: touch startGeth.sh and touch process.json
 
 And lets set the startGeth.sh to be executable with: chmod 755 startGeth.sh
 
-These two files will be used to configure Geth before running the docker container and process.json to configure PM2 run time stats. ############################################################################################### example of startGeth.sh NOTE:If your running GETH on mordern disable or remove the --sputnikvm paramter till further notice, Thank you.
-
+These two files will be used to configure Geth before running the docker container and process.json to configure PM2 run time stats. ############################################################################################### 
+example of startGeth.sh 
+NOTE:If your running GETH on mordern disable or remove the --sputnikvm paramter till further notice, Thank you.
+```
 #!/bin/sh
 #uncomment geth command that best fits your needs to start geth
 #If you know what you're doing feel free to write your custom start geth commands here
@@ -61,8 +63,9 @@ geth --sputnikvm --chain=morden --fast --identity=<nameOfGethContainer> --rpc
 #geth --sputnikvm --identity=<nameOfGethContainer> --rpc --mine --minerthreads=2 --etherbase 0x0450f61ac77c50137b61fff46630eb36029d8dc1
 ###############################################################################################
 #########################################################################################
+```
 Example of process.json to display stats on test server:
-
+```
 [
   {
     "name"              : "<Name of PM2 Session>",
@@ -93,8 +96,11 @@ Example of process.json to display stats on test server:
     }
   }
 ]
-######################################################################################### To run the container use you can also use this command instead of docker pull: docker run -tid --name <ContainerName> -p <tcpGethPort>:30303 -p <udpGethPort>:30303/udp -p <rpcPort>:8545 -p <wsPort>:8546 --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v04
+```
+######################################################################################### 
+To run the container you can use this command instead of docker pull: docker run -tid --name <ContainerName> -p <tcpGethPort>:30303 -p <udpGethPort>:30303/udp -p <rpcPort>:8545 -p <wsPort>:8546 --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v04
 
+Just make sure you have your directories created and `process.json` and `gethStart.sh` created.
 #########################################################################################
 
 To see what Geth is doing in the container you have a two quick choices. You can either attach to the container and will show you direct out put of Geth, or you can use the docker exec -t <container Name> /bin/bash to actually connect to the container and browse it.
