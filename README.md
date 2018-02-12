@@ -39,7 +39,9 @@ In that folder create two files: touch startGeth.sh and touch process.json
 And lets set the startGeth.sh to be executable with: chmod 755 startGeth.sh
 
 These two files will be used to configure Geth before running the docker container and process.json to configure PM2 run time stats. ############################################################################################### 
-example of startGeth.sh 
+
+**example of startGeth.sh**
+
 NOTE:If your running GETH on mordern disable or remove the --sputnikvm paramter till further notice, Thank you.
 ```
 #!/bin/sh
@@ -64,7 +66,7 @@ geth --sputnikvm --chain=morden --fast --identity=<nameOfGethContainer> --rpc
 ###############################################################################################
 #########################################################################################
 ```
-Example of process.json to display stats on test server:
+Example of **process.json** to display stats on test server:
 ```
 [
   {
