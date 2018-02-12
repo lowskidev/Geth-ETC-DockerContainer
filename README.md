@@ -1,5 +1,15 @@
 bakon-etcnode
-Classic Ethereum Geth Node with etc-net-intelligence-api Docker Container
+Classic Ethereum Geth Node with etc-net-intelligence-api in a Docker Container
+https://github.com/ethereumproject/go-ethereum/releases
+
+############################################################################################# 
+
+**v.06** - Updated to geth4.2.2
+
+https://github.com/ethereumproject/go-ethereum/releases <-- for change log to Geth
+
+docker pull bakon3/etcnode:v.06
+GITHUB:https://github.com/DialogueSolutions/bakon-etcnode
 
 ############################################################################################# 
 
@@ -14,7 +24,9 @@ docker pull bakon3/etcnode:v.04
 
 New versions now compile GETH from source instead of downloading binary. This way, every time a new version of GETH, comes out instead of waiting for me to update my images you can build from dockerfile :).
 
-############################################################################################# v.03 - Updated to geth 4.2.0 Added --sputnikvm to geth run in gethStart.sh file (Disable for Morden Chain) #############################################################################################
+############################################################################################# 
+
+**v.03** - Updated to geth 4.2.0 Added `--sputnikvm` to geth run in *gethStart.sh* file (Disable for Morden Chain) #############################################################################################
 
 Using the classic go-ethereum client(https://github.com/ethereumproject/go-ethereum). This is a docker container that is designed so you could customize your geth run time before running the container, or even stop the container edit the geth run time and restart it.
 
@@ -22,14 +34,26 @@ This is done so you can use one image to create containers for Main or Morden ch
 
 This container is setup to use --mount method during docker run to use host persistent storage for chaindata.
 
-How to use: After the container has finished building, before running it. In your Docker hosts $HOME Directory under mkdir -p ~/.ethereum-classic/<dockerGethContainerName> create a folder with the name for your Geth container instance.
+How to use: After the container has finished building, before running it. In your Docker hosts `$HOME` Directory under 
 
-In that folder create two files: touch startGeth.sh and touch process.json
+`mkdir -p ~/.ethereum-classic/<dockerGethContainerName>` create a folder with the name for your Geth container instance.
 
-And lets set the startGeth.sh to be executable with: chmod 755 startGeth.sh
+In that folder create two files:
 
-These two files will be used to configure Geth before running the docker container and process.json to configure PM2 run time stats. ############################################################################################### example of startGeth.sh NOTE:If your running GETH on mordern disable or remove the --sputnikvm paramter till further notice, Thank you.
+`touch startGeth.sh` 
 
+and 
+
+`touch process.json`
+
+And lets set the `startGeth.sh` to be executable with: `chmod 755 startGeth.sh`
+
+These two files will be used to configure Geth before running the docker container and process.json to configure PM2 run time stats. ############################################################################################### 
+
+**example of startGeth.sh**
+
+NOTE:If your running GETH on mordern disable or remove the --sputnikvm paramter till further notice, Thank you.
+```
 #!/bin/sh
 #uncomment geth command that best fits your needs to start geth
 #If you know what you're doing feel free to write your custom start geth commands here
@@ -51,8 +75,9 @@ geth --sputnikvm --chain=morden --fast --identity=<nameOfGethContainer> --rpc
 #geth --sputnikvm --identity=<nameOfGethContainer> --rpc --mine --minerthreads=2 --etherbase 0x0450f61ac77c50137b61fff46630eb36029d8dc1
 ###############################################################################################
 #########################################################################################
-Example of process.json to display stats on test server:
-
+```
+Example of **process.json** to display stats on test server:
+```
 [
   {
     "name"              : "<Name of PM2 Session>",
@@ -83,8 +108,11 @@ Example of process.json to display stats on test server:
     }
   }
 ]
-######################################################################################### To run the container use you can also use this command instead of docker pull: docker run -tid --name <ContainerName> -p <tcpGethPort>:30303 -p <udpGethPort>:30303/udp -p <rpcPort>:8545 -p <wsPort>:8546 --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v04
+```
+######################################################################################### 
+To run the container you can use this command instead of docker pull: docker run -tid --name <ContainerName> -p <tcpGethPort>:30303 -p <udpGethPort>:30303/udp -p <rpcPort>:8545 -p <wsPort>:8546 --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v04
 
+Just make sure you have your directories created and `process.json` and `gethStart.sh` created.
 #########################################################################################
 
 To see what Geth is doing in the container you have a two quick choices. You can either attach to the container and will show you direct out put of Geth, or you can use the docker exec -t <container Name> /bin/bash to actually connect to the container and browse it.
@@ -94,3 +122,5 @@ To see what Geth is doing in the container you have a two quick choices. You can
 You can connect to the geth javascript console by either entering the container with geth exec and executing geth attach or geth --chain=morden attach for the test server.
 
 To connect to a containers JS console from the Docker host. You can do so by navigating to the containers mounted directory ~/.ethereum-classic/<Foldername> and executing the command geth attach ipc:geth.ipc Note:You need to have Geth installed on your host machine as well
+  
+Donate ETC:0xc5bbf1ecdeba58013f17c6ede01aab73a17104a4
