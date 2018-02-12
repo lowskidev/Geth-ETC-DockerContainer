@@ -1,0 +1,30 @@
+[
+  {
+    "name"              : "<Name of PM2 Session>",
+    "cwd"               : "/root/www",
+    "script"            : "app.js",
+    "log_date_format"   : "YYYY-MM-DD HH:mm Z",
+    "log_file"          : "logs/node-app-log.log",
+    "out_file"          : "logs/node-app-out.log",
+    "error_file"        : "logs/node-app-err.log",
+    "merge_logs"        : false,
+    "watch"             : false,
+    "max_restarts"      : 10,
+    "exec_interpreter"  : "node",
+    "exec_mode"         : "fork_mode",
+    "env":
+    {
+      "NODE_ENV"        : "development",
+      "RPC_HOST"        : "localhost",
+      "RPC_PORT"        : "8545",
+      "LISTENING_PORT"  : "30303",
+      "INSTANCE_NAME"   : "<Name to show on stats website>",
+      "CONTACT_DETAILS" : "bakon",
+      "WS_SERVER"       : "ws://teststats.epool.io/",//test server domain
+      "WS_SECRET"       : "rockonetc",               //test server password  
+      //"WS_SERVER"     : "ws://rpc.etcstats.net", //live server domain
+      //"WS_SECRET"     : "5ceuMix4qSM6APj7QwTPU", //live server password
+      "VERBOSITY"       : 2
+    }
+  }
+]
