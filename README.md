@@ -24,7 +24,9 @@ docker pull bakon3/etcnode:v.04
 
 New versions now compile GETH from source instead of downloading binary. This way, every time a new version of GETH, comes out instead of waiting for me to update my images you can build from dockerfile :).
 
-############################################################################################# v.03 - Updated to geth 4.2.0 Added --sputnikvm to geth run in gethStart.sh file (Disable for Morden Chain) #############################################################################################
+############################################################################################# 
+
+**v.03** - Updated to geth 4.2.0 Added `--sputnikvm` to geth run in *gethStart.sh* file (Disable for Morden Chain) #############################################################################################
 
 Using the classic go-ethereum client(https://github.com/ethereumproject/go-ethereum). This is a docker container that is designed so you could customize your geth run time before running the container, or even stop the container edit the geth run time and restart it.
 
@@ -32,11 +34,17 @@ This is done so you can use one image to create containers for Main or Morden ch
 
 This container is setup to use --mount method during docker run to use host persistent storage for chaindata.
 
-How to use: After the container has finished building, before running it. In your Docker hosts $HOME Directory under mkdir -p ~/.ethereum-classic/<dockerGethContainerName> create a folder with the name for your Geth container instance.
+How to use: After the container has finished building, before running it. In your Docker hosts `$HOME` Directory under 
+`mkdir -p ~/.ethereum-classic/<dockerGethContainerName>` create a folder with the name for your Geth container instance.
 
-In that folder create two files: touch startGeth.sh and touch process.json
+In that folder create two files: 
+`touch startGeth.sh` 
 
-And lets set the startGeth.sh to be executable with: chmod 755 startGeth.sh
+and 
+
+`touch process.json`
+
+And lets set the `startGeth.sh` to be executable with: `chmod 755 startGeth.sh`
 
 These two files will be used to configure Geth before running the docker container and process.json to configure PM2 run time stats. ############################################################################################### 
 
