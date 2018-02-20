@@ -30,6 +30,10 @@ New versions now compile GETH from source instead of downloading binary. This wa
 
 **v.03** - Updated to geth 4.2.0 Added `--sputnikvm` to geth run in *gethStart.sh* file (Disable for Morden Chain) #############################################################################################
 
+**You can also run clone this repo and build container directly from dockerfile, this will alwayes give you the latest build of GETH and SputnikVM.**
+
+#############################################################################################
+
 Using the classic go-ethereum client(https://github.com/ethereumproject/go-ethereum). This is a docker container that is designed so you could customize your geth run time before running the container, or even stop the container edit the geth run time and restart it.
 
 This is done so you can use one image to create containers for Main or Morden chains. It also lets you setup custom port forwardings, and it includes (etc-net-intelligence-api)https://github.com/Machete3000/etc-net-intelligence-api/wiki.
@@ -112,7 +116,10 @@ Example of **process.json** to display stats on test server:
 ]
 ```
 ######################################################################################### 
-To run the container you can use this command instead of docker pull: docker run -tid --name <ContainerName> -p <tcpGethPort>:30303 -p <udpGethPort>:30303/udp -p <rpcPort>:8545 -p <wsPort>:8546 --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v04
+To run the container you can use this command instead of docker pull: 
+Remember becarefull when xpsoing the rdp and ws ports other then for local usage.
+
+docker run -tid --name <ContainerName> -p <tcpGethPort>:30303 -p <rpcPort>:8545 -p <wsPort>:8546 --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v04
 
 Just make sure you have your directories created and `process.json` and `gethStart.sh` created.
 #########################################################################################
