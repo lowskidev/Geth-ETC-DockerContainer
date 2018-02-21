@@ -20,14 +20,15 @@ Now we're going to clone this repo in the following way:
 Now you have two options:
 
 1)Use the provided docker file and install to build the docker image for your conatiner or you can use:
-		--Building the container from docker file:
-					example: `docker build -t bakon3/etcnode:v.08 .`
-    --Puilling image from docker hub
-          example: `docker pull bakon3/etcnode:v.08`
+
+**--Building the container from docker file:**
+example: `docker build -t bakon3/etcnode:v.08 .`
+**--Puilling image from docker hub:**
+example: `docker pull bakon3/etcnode:v.08`
 
 Right now the tags are versioned and no `latest` image has been created until release version.
 
-Before executing `docker run` make sure you edit the paramteres in `startGeth.sh` and also make sure you `chmod` startGeth.sh to 755 at least.
+Before executing `docker run` make sure you edit the paramteres in `startGeth.sh` and also make sure you `chmod` startGeth.sh to at least 755, `chmod 755 startGeth.sh`. 
 
 Specify `--chain=<chainName>` and `--identity=<nameOfGethContainer>` and if you plan on accessing RPC remotly make sure you also specify allowed CORS with `--rpc-cors-domain="http://domain.com"`
 
