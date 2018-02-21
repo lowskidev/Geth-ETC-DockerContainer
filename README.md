@@ -1,6 +1,15 @@
 bakon-etcnode
 Classic Ethereum Geth Node with etc-net-intelligence-api in a Docker Container
 https://github.com/ethereumproject/go-ethereum/releases
+#############################################################################################
+
+**v.08** - Updated to geth5.0.0
+
+https://github.com/ethereumproject/go-ethereum/releases <-- for change log to Geth
+
+#############################################################################################
+
+
 
 ############################################################################################# 
 
