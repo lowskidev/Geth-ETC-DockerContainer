@@ -40,7 +40,7 @@ echo -e '\e[92m#################################################################
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing D will build from dockerfile, chosing I to build from Docker Hub Image'
 echo -e '##################################################################################################\e[0m'
-read -p 'd:Dockerfile or d:Docker Hub Image: ' instType	 &&
+read -p 'd:Dockerfile or i:Docker Hub Image:d/I ' instType	 &&
 	
 if [ $instType = 'd' ]; then
     read -p 'Enter name for docker image: ' imageName &&
@@ -52,7 +52,7 @@ fi
 echo -e '\e[92m#################################################'
 echo 'Would you like to run the container now?'
 echo '#################################################'
-read -p 'Run Container?:y or n ' runContainer
+read -p 'yN' runContainer
 
 if [ $runContainer = 'y' ]; then
 	echo '#################################################'
@@ -93,3 +93,4 @@ else
 	echo 'If you decide to run the conatiner at a later time just run this installation script again.'
 	echo -e '##################################################################################################\e[0m'
 fi
+
