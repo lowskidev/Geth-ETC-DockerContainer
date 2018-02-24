@@ -29,7 +29,7 @@ if [ $installingDocker = 'y' ]; then
 	echo -e '#################################################\e[0m'
 	sudo usermod -aG docker ${USER}
 	echo ''
-	echo ''	
+	echo ''
 	echo -e '\e[92m##################################################################################################'
 	echo 'Docker CE succesfully installed'
 	echo -e '##################################################################################################\e[0m'
@@ -42,14 +42,14 @@ else
 	echo ''
 	echo ''
 fi
-	
+
 echo -e '\e[92m##################################################################################################'
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing D will build from dockerfile, chosing I to build from Docker Hub Image'
 echo -e '##################################################################################################\e[0m'
 echo ''
 read -p 'd:Dockerfile or i:Docker Hub Image:d/I ' instType
-	
+
 if [ $instType = 'd' ]; then
     read -p 'Enter name for docker image: ' imageName
 	sudo docker build -t ${imageName,,} .
@@ -83,18 +83,18 @@ if [ $runContainer = 'y' ]; then
 	echo ''
 	echo '#################################################'
 	echo 'Creating directorioes and startGeth.sh file'
-	echo -e '#################################################\e[0m'	
-	
+	echo -e '#################################################\e[0m'
+
 	mkdir $HOME/.ethereum-classic/$containerName &&
 	touch $HOME/.ethereum-classic/$containerName/startGeth.sh
 	chmod 755 $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	
+
 	echo '#!/bin/sh' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	echo '#uncomment geth command that best fits your needs to start geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '#If you know what you are doing feel free to write your custom start geth commands here' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	echo '#Start Geth fast sync DO this first before you start with mining' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	echo 'geth --sputnikvm --fast --identity='$containerName '--rpc --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo '' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo 'geth --sputnikvm --fast --identity='$containerName'--rpc --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo ''
 	echo ''
 	echo -e '\e[92m#################################################'
@@ -105,6 +105,9 @@ if [ $runContainer = 'y' ]; then
 	else
 		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
+	echo -e '\e[92m#################################################'
+	echo 'The container has been starterd. you can use sudo docker attach <containerName> to view status'
+	echo -e '#################################################\e[0m'
 else
 	echo -e '\e[92m##################################################################################################'
 	echo 'If you decide to run the conatiner at a later time just run this installation script again.'
