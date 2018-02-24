@@ -5,6 +5,24 @@ Docker Container containing - Classic Ethereum Geth Node Software compiled with 
 
 Quickest way to spin up a container is:
 
+`git clone https://github.com/DialogueSolutions/bakon-Geth-ETC-DockerContainer.git`
+
+After wards:
+`cd bakon-Geth-ETC-DockerContainer.git`
+
+Now we use the provided `install.sh` file to setup docker if needed and your new contianer with GETH ETC Node software, but first it has to be made executable so:
+
+`chmod 755 install.sh`
+
+and now run it:
+
+`./install.sh`
+
+Follow the promps on the screen and you should have a running container in no time.
+For quicker setup use the option to build container from *Docker Hub* other wise it'll build a whol image from the dockerfile.
+
+**USE The below instructions to manualy set everyhting up**
+
 On your linux box create a folder in you $home directory: 
 
 `mkdir -p $HOME/.ethereum-classic/<dockerGethContainerName>`
