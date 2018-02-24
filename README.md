@@ -8,7 +8,7 @@ Quickest way to spin up a container is:
 `git clone https://github.com/DialogueSolutions/bakon-Geth-ETC-DockerContainer.git`
 
 After wards:
-`cd bakon-Geth-ETC-DockerContainer.git`
+`cd bakon-Geth-ETC-DockerContainer`
 
 Now we use the provided `install.sh` file to setup docker if needed and your new contianer with GETH ETC Node software, but first it has to be made executable so:
 
