@@ -11,7 +11,6 @@ echo -e '#################################################'
 echo ''
 read installingDocker
 echo ''
-echo ''
 if [ $installingDocker = 'y' ]; then
 	echo '#################################################'
 	echo 'Installing Docker'
@@ -22,80 +21,67 @@ if [ $installingDocker = 'y' ]; then
 	apt-cache policy docker-ce &&
 	sudo apt-get install -y docker-ce make &&
 	echo ''
-	echo ''
 	echo -e '\e[92m#################################################'
 	echo 'Allow current user to use Docker without "sudo"'
 	echo 'SSH Session restart will be needed'
 	echo -e '#################################################\e[0m'
 	sudo usermod -aG docker ${USER}
-	echo ''
 	echo ''	
 	echo -e '\e[92m##################################################################################################'
 	echo 'Docker CE succesfully installed'
 	echo -e '##################################################################################################\e[0m'
 else
 	echo ''
-	echo ''
 	echo -e '\e[92m##################################################################################################'
 	echo 'Ommiting Docker Install'
 	echo -e '##################################################################################################\e[0m'
 	echo ''
-	echo ''
-fi
-	
+fi	
 echo -e '\e[92m##################################################################################################'
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
-echo 'Chosing D will build from dockerfile, chosing I to build from Docker Hub Image'
+echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
 echo -e '##################################################################################################\e[0m'
 echo ''
-read -p 'd:Dockerfile or i:Docker Hub Image:d/I ' instType
-	
+read instType	
 if [ $instType = 'd' ]; then
     read -p 'Enter name for docker image: ' imageName
 	sudo docker build -t ${imageName,,} .
 else
 	sudo docker pull bakon3/etcnode:v.08
 fi
-
-echo -e '\e[92m#################################################'
-echo 'Would you like to run the container now?'
-echo '#################################################'
-read -p 'yN' runContainer
-
+echo -e '\e[92m##################################################################################################'
+echo 'Would you like to run the container now?yN'
+echo '##################################################################################################'
+read runContainer
 if [ $runContainer = 'y' ]; then
-	echo '#################################################'
+	echo '##################################################################################################'
 	echo 'Type in the name for your container'
-	echo '#################################################'
+	echo '##################################################################################################'
 	read -p 'Container Name: ' containerName
 	echo ''
-	echo ''
-	echo '#################################################'
-	echo 'Select port which the ETC will listen for connection default is 30303'
-	echo '#################################################'
+	echo '##################################################################################################'
+	echo 'Select port on which GETH will listen for peers, port should be 4 - 6 digits long'
+	echo '##################################################################################################'
 	read -p 'Container GETH Port: ' gethPort
 	echo ''
-	echo ''
-	echo '#################################################'
-	echo 'Select port where ETC will listen for RPC connections default is 8545'
-	echo '#################################################'
+	echo '##################################################################################################'
+	echo 'Select port on which GETH will listen for RPC connections, port should be 4 - 6 digits long'
+	echo '##################################################################################################'
 	read -p 'Container GETH RPC Port: ' rpcPort
 	echo ''
-	echo ''
-	echo '#################################################'
+	echo '##################################################################################################'
 	echo 'Creating directorioes and startGeth.sh file'
-	echo -e '#################################################\e[0m'	
-	
-	mkdir $HOME/.ethereum-classic/$containerName &&
+	echo -e '##################################################################################################\e[0m'		
+	mkdir -pv $HOME/.ethereum-classic/$containerName &&
 	touch $HOME/.ethereum-classic/$containerName/startGeth.sh
 	chmod 755 $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	
+	#Create startGeth File
 	echo '#!/bin/sh' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '#If you know what you are doing feel free to write your custom start geth commands here' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	echo 'geth --sputnikvm --fast --identity='$containerName'--rpc --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	echo ''
+	echo 'geth --sputnikvm --fast --identity='$containerName' --rpc --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo ''
 	echo -e '\e[92m#################################################'
 	echo 'Starting Container'
@@ -105,9 +91,9 @@ if [ $runContainer = 'y' ]; then
 	else
 		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
-	echo -e '\e[92m#################################################'
-	echo 'The container has been starterd. you can use sudo docker attach <containerName> to view status'
-	echo -e '#################################################\e[0m'
+	echo -e '\e[92m##################################################################################################'
+	echo 'The container has been starterd. you can use sudo docker attach ' $containerName ' to view status'
+	echo -e '##################################################################################################\e[0m'
 	sudo docker ps
 else
 	echo -e '\e[92m##################################################################################################'
