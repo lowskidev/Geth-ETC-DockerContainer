@@ -22,10 +22,10 @@ if [ $installingDocker = 'y' ]; then
 
 	echo -e '\e[92m#################################################'
 	echo 'Allow current user to use Docker without "sudo"'
+	echo 'SSH Session restart will be needed'
 	echo -e '#################################################\e[0m'
 	sudo usermod -aG docker ${USER} &&
-	newgrp docker &&
-	newgrp $USER &&
+
 	
 	echo -e '\e[92m##################################################################################################'
 	echo 'Docker CE succesfully installed'
@@ -36,18 +36,18 @@ else
 	echo -e '##################################################################################################\e[0m'
 	echo ''
 fi
-
+	
 echo -e '\e[92m##################################################################################################'
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing D will build from dockerfile, chosing I to build from Docker Hub Image'
 echo -e '##################################################################################################\e[0m'
 read -p 'd:Dockerfile or i:Docker Hub Image:d/I ' instType
-
+	
 if [ $instType = 'd' ]; then
     read -p 'Enter name for docker image: ' imageName
-	docker build -t ${imageName,,} .
+	sudo docker build -t ${imageName,,} .
 else
-	docker pull bakon3/etcnode:v.08
+	sudo docker pull bakon3/etcnode:v.08
 fi
 
 echo -e '\e[92m#################################################'
@@ -73,7 +73,7 @@ if [ $runContainer = 'y' ]; then
 
 	echo '#################################################'
 	echo 'Creating directorioes and startGeth.sh file'
-	echo -e '#################################################\e[0m'
+	echo -e '#################################################\e[0m'	
 	mkdir $HOME/.ethereum-classic/$containerName &&
 	touch $HOME/.ethereum-classic/$containerName/startGeth.sh
 	chmod 755 $HOME/.ethereum-classic/$containerName/startGeth.sh &&
@@ -83,11 +83,11 @@ if [ $runContainer = 'y' ]; then
 	echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '#Start Geth fast sync DO this first before you start with mining' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo 'geth --sputnikvm --fast --identity=$containerName --rpc --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-
+	
 	if [ $instType = 'd ']; then
-		docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ $imageName
+		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ $imageName
 	else
-		docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
+		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
 else
 	echo -e '\e[92m##################################################################################################'
