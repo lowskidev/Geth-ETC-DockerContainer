@@ -64,3 +64,7 @@ Once you have that setup we can execute the container.
 `docker run -tid --name <ContainerName> -p <tcpGethPort>:30303/tcp -p <rpcPort>:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v.08`
 
 If everything was setup correctly you should see your contianer runnin with: `docker ps`
+#############################################################################################
+
+**Feel free to support this development. :)**
+ETC: 0x0450f61AC77C50137B61fff46630eb36029d8dC1
