@@ -7,7 +7,7 @@ Docker Container containing - Classic Ethereum Geth Node Software compiled with 
 
 `git clone https://github.com/DialogueSolutions/bakon-Geth-ETC-DockerContainer.git`
 
-After wards:
+Afterwards:
 `cd bakon-Geth-ETC-DockerContainer`
 
 Now we use the provided `install.sh` file to setup docker if needed and your new contianer with GETH ETC Node software, but first it has to be made executable so:
