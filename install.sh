@@ -8,7 +8,6 @@ echo ''
 echo -e '#################################################'
 echo -e 'Are we installing Docker?:yN'
 echo -e '#################################################'
-echo ''
 read installingDocker
 echo ''
 if [ $installingDocker = 'y' ]; then
@@ -41,7 +40,6 @@ echo -e '\e[92m#################################################################
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
 echo -e '##################################################################################################\e[0m'
-echo ''
 read instType	
 if [ $instType = 'd' ]; then
     read -p 'Enter name for docker image: ' imageName
@@ -60,12 +58,12 @@ if [ $runContainer = 'y' ]; then
 	read -p 'Container Name: ' containerName
 	echo ''
 	echo '##################################################################################################'
-	echo 'Select port on which GETH will listen for peers, port should be 4 - 6 digits long'
+	echo 'Select port on which GETH will listen for peers, port should be 4 - 5 digits long'
 	echo '##################################################################################################'
 	read -p 'Container GETH Port: ' gethPort
 	echo ''
 	echo '##################################################################################################'
-	echo 'Select port on which GETH will listen for RPC connections, port should be 4 - 6 digits long'
+	echo 'Select port on which GETH will listen for RPC connections, port should be 4 - 5 digits long'
 	echo '##################################################################################################'
 	read -p 'Container GETH RPC Port: ' rpcPort
 	echo ''
@@ -87,7 +85,7 @@ if [ $runContainer = 'y' ]; then
 	echo 'Starting Container'
 	echo -e '#################################################\e[0m'
 	if [ $instType = 'd' ]; then
-		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ $imageName
+		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
 	else
 		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
