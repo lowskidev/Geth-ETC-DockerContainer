@@ -24,7 +24,7 @@ For quicker setup use the option to build container from *Docker Hub* other wise
 This is the first version. If you encounter any errors during the installation, especially when docker is spining up the container. It's usually something you can easily fix with whatever answers you gave to the promps.
 
 You can easily just restart the `install.sh` and continue on pretty much from where you left off.
-#################################################################################################
+#############################################################################################
 
 **USE The below instructions to manualy set everyhting up**
 
