@@ -59,11 +59,13 @@ if [ $runContainer = 'y' ]; then
 	echo ''
 	echo '##################################################################################################'
 	echo 'Select port on which GETH will listen for peers, port should be 4 - 5 digits long'
+	echo '1-65535 are available, and ports in range 1-1023 are the privileged ones so dont use them'
 	echo '##################################################################################################'
 	read -p 'Container GETH Port: ' gethPort
 	echo ''
 	echo '##################################################################################################'
 	echo 'Select port on which GETH will listen for RPC connections, port should be 4 - 5 digits long'
+	echo '1-65535 are available, and ports in range 1-1023 are the privileged ones so dont use them'
 	echo '##################################################################################################'
 	read -p 'Container GETH RPC Port: ' rpcPort
 	echo ''
@@ -89,13 +91,12 @@ if [ $runContainer = 'y' ]; then
 	else
 		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
-	echo -e '\e[92m##################################################################################################'
-	echo 'The container has been starterd. you can use sudo docker attach ' $containerName ' to view status'
-	echo -e '##################################################################################################\e[0m'
+	echo -e '\e[92m###############################################################################################################################'
+	echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
+	echo -e '#####################################################################################################################################\e[0m'
 	sudo docker ps
 else
 	echo -e '\e[92m##################################################################################################'
 	echo 'If you decide to run the conatiner at a later time just run this installation script again.'
 	echo -e '##################################################################################################\e[0m'
 fi
-
