@@ -87,12 +87,15 @@ if [ $runContainer = 'y' ]; then
 	echo 'Starting Container'
 	echo -e '#################################################\e[0m'
 	if [ $instType = 'd' ]; then
-		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
 	else
-		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
+		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
 	echo -e '\e[92m###############################################################################################################################'
 	echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
+	echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName 
+	echo 'If for any reason you need to remove the container with docker rm '$containerName
+	echo 'Next time you run install.sh and re use the same container name you did before you will not lose any sycned data.'
 	echo -e '#####################################################################################################################################\e[0m'
 	sudo docker ps
 else
