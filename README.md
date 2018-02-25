@@ -1,13 +1,13 @@
-# bakon-Geth-ETC-DockerContainer
+# Geth-ETC-DockerContainer
 Docker Container containing - Classic Ethereum Geth Node Software compiled with latest version of SputnikVM
 
 *NOTE*: This version only supports linux docker hosts, windows version coming soon.
 
-Quickest way to spin up a container is:
+**Quickest way to spin up a container is:**
 
 `git clone https://github.com/DialogueSolutions/bakon-Geth-ETC-DockerContainer.git`
 
-After wards:
+Afterwards:
 `cd bakon-Geth-ETC-DockerContainer`
 
 Now we use the provided `install.sh` file to setup docker if needed and your new contianer with GETH ETC Node software, but first it has to be made executable so:
@@ -19,7 +19,16 @@ and now run it:
 `./install.sh`
 
 Follow the promps on the screen and you should have a running container in no time.
-For quicker setup use the option to build container from *Docker Hub* other wise it'll build a whol image from the dockerfile.
+For quicker setup use the option to build container from *Docker Hub* other wise it'll build a whole image from the dockerfile.
+
+This is the first version. If you encounter any errors during the installation, especially when docker is spining up the container. It's usually something you can easily fix with whatever answers you gave to the promps.
+
+You can easily just restart the `install.sh` and continue on pretty much from where you left off.
+
+If for any reason you need to remove the container with `docker rm containerName`
+Next time you run install.sh and reuse the same container name you did before you will not lose any sycned data.
+
+#############################################################################################
 
 **USE The below instructions to manualy set everyhting up**
 
@@ -55,3 +64,7 @@ Once you have that setup we can execute the container.
 `docker run -tid --name <ContainerName> -p <tcpGethPort>:30303/tcp -p <rpcPort>:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/<nameOfNodeDirecotrory>,target=/.ethereum-classic/ bakon3/etcnode:v.08`
 
 If everything was setup correctly you should see your contianer runnin with: `docker ps`
+#############################################################################################
+
+**Feel free to support this development. :)**
+ETC: 0x0450f61AC77C50137B61fff46630eb36029d8dC1
