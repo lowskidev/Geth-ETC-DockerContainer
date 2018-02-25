@@ -1,4 +1,4 @@
-# bakon-Geth-ETC-DockerContainer
+# Geth-ETC-DockerContainer
 Docker Container containing - Classic Ethereum Geth Node Software compiled with latest version of SputnikVM
 
 *NOTE*: This version only supports linux docker hosts, windows version coming soon.
