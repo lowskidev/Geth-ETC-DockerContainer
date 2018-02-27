@@ -1,3 +1,4 @@
+#!/bin/bash
 echo -e '\e[92m###################################################################################################################################################'
 echo -e 'This script is intended on helping you setup and run a GETH ETC Node in a Docker container '
 echo -e 'This will allow you to easily and seperatly run multiple instances of the GETH ETC Node on one machine with specific ports'
