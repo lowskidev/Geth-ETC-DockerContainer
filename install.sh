@@ -8,7 +8,7 @@ echo
 echo -e '\e[92m###################################################################################################################################################'
 echo -e 'Are we installing Docker?:yN'
 echo -e '###################################################################################################################################################\e[0m'
-read installingDocker;
+read installingDocker
 echo
 if [[ $installingDocker == 'y' ]]; then
 	echo -e '\e[92m###################################################################################################################################################'
@@ -41,7 +41,7 @@ echo -e '\e[92m#################################################################
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
 echo -e '###################################################################################################################################################\e[0m'
-read instType	
+read instType
 if [[ $instType == 'd' ]]; then
     read -p 'Enter name for docker image: ' imageName
 	sudo docker build -t ${imageName,,} .
@@ -63,13 +63,13 @@ if [[ $runContainer == 'y' ]]; then
 	echo '1-65535 are available, and ports in range 1-1023 are the privileged ones so dont use them'
 	echo -e '###################################################################################################################################################\e[0m'
 	read -p 'Container GETH Port: ' gethPort
-	echo 
+	echo
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'Select port on which GETH will listen for RPC connections, port should be 4 - 5 digits long'
 	echo '1-65535 are available, and ports in range 1-1023 are the privileged ones so dont use them'
 	echo -e '###################################################################################################################################################\e[0m'
 	read -p 'Container GETH RPC Port: ' rpcPort
-	echo 
+	echo
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'Creating directorioes and startGeth.sh file'
 	echo -e '###################################################################################################################################################\e[0m'
