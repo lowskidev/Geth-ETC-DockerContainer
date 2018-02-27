@@ -8,7 +8,7 @@ echo
 echo -e '\e[92m###################################################################################################################################################'
 echo -e 'Are we installing Docker?:yN'
 echo -e '###################################################################################################################################################\e[0m'
-read -n 1 -p installingDocker
+read -n 1 installingDocker
 echo
 if [[ $installingDocker == 'y' ]]; then
 	echo -e '\e[92m###################################################################################################################################################'
@@ -41,7 +41,7 @@ echo -e '\e[92m#################################################################
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
 echo -e '###################################################################################################################################################\e[0m'
-read instType
+read -n 1 instType
 if [[ $instType == 'd' ]]; then
     read -p 'Enter name for docker image: ' imageName
 	sudo docker build -t ${imageName,,} .
@@ -51,7 +51,7 @@ fi
 echo -e '\e[92m###################################################################################################################################################'
 echo 'Would you like to run the container now? "yN"'
 echo -e '###################################################################################################################################################\e[0m'
-read runContainer
+read -n 1 runContainer
 if [[ $runContainer == 'y' ]]; then
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'Type in the name for your container'
