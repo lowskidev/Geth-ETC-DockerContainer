@@ -67,7 +67,7 @@ function startContainer(){
 	echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-	echo 'geth --sputnikvm --fast --identity='$containerName' --rpc --maxpeers=55 --cache=2014 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo 'geth --sputnikvm --fast --identity='$containerName' --rpc --cache=1024 --rpcaddr=0.0.0.0 --rpccorsdomain="*" --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo
 	echo -e '\e[92m#################################################'
 	echo 'Starting Container'
@@ -77,6 +77,7 @@ function startContainer(){
 	else
 		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
+	
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
 	echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName 
