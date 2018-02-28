@@ -1,58 +1,43 @@
 #!/bin/bash
-#curl -sSL https://raw.githubusercontent.com/DialogueSolutions/Geth-ETC-DockerContainer/master/install.sh | bash
-echo -e '\e[92m###################################################################################################################################################'
-echo -e 'This script is intended on helping you setup and run a GETH ETC Node in a Docker container '
-echo -e 'This will allow you to easily and seperatly run multiple instances of the GETH ETC Node on one machine with specific ports'
-echo -e '###################################################################################################################################################\e[0m'
-echo
-echo -e '\e[92m###################################################################################################################################################'
-echo -e 'Are we installing Docker?:yN'
-echo -e '###################################################################################################################################################\e[0m'
-read -n 1 installingDocker
-echo
-if [[ $installingDocker == 'y' ]]; then
-	echo -e '\e[92m###################################################################################################################################################'
-	echo 'Installing Docker'
-	echo -e '#################################################\e[0m'
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
-	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
-	sudo apt-get update &&
-	apt-cache policy docker-ce &&
-	sudo apt-get install -y docker-ce make &&
-	echo
-	echo -e '\e[92m###################################################################################################################################################'
-	echo 'Allow current user to use Docker without "sudo"'
-	echo 'SSH Session restart will be needed'
-	echo -e '###################################################################################################################################################\e[0m'
-	sudo usermod -aG docker ${USER}
-	echo
-	echo -e '\e[92m###################################################################################################################################################'
-	echo 'Docker CE succesfully installed'
-	echo -e '###################################################################################################################################################\e[0m'
-else
-	echo
-	echo -e '\e[92m###################################################################################################################################################'
-	echo 'Ommiting Docker Install'
-	echo -e '###################################################################################################################################################\e[0m'
-	echo
-fi
-
-echo -e '\e[92m###################################################################################################################################################'
-echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
-echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
-echo -e '###################################################################################################################################################\e[0m'
-read -n 1 instType
-if [[ $instType == 'd' ]]; then
-    read -p 'Enter name for docker image: ' imageName
-	sudo docker build -t ${imageName,,} .
-else
-	sudo docker pull bakon3/etcnode:v.08
-fi
-echo -e '\e[92m###################################################################################################################################################'
-echo 'Would you like to run the container now? "yN"'
-echo -e '###################################################################################################################################################\e[0m'
-read -n 1 runContainer
-if [[ $runContainer == 'y' ]]; then
+#Functions
+function installDocker(){
+	if [[ $installingDocker == 'y' ]]; then	
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Installing Docker'
+		echo -e '#################################################\e[0m'
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
+		sudo apt-get update &&
+		apt-cache policy docker-ce &&
+		sudo apt-get install -y docker-ce make &&
+		echo
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Allow current user to use Docker without "sudo"'
+		echo 'SSH Session restart will be needed'
+		echo -e '###################################################################################################################################################\e[0m'
+		sudo usermod -aG docker ${USER}
+		echo
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Docker CE succesfully installed'
+		echo -e '###################################################################################################################################################\e[0m'
+	else
+		echo
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Ommiting Docker Install'
+		echo -e '###################################################################################################################################################\e[0m'
+		echo
+	fi
+}
+function buildImage(){
+	if [[ $instType == 'd' ]]; then
+		read -p 'Enter name for docker image: ' imageName
+		sudo docker build -t ${imageName,,} .
+	else
+		sudo docker pull bakon3/etcnode:v.08
+	fi
+}
+function startContainer(){
+	if [[ $runContainer == 'y' ]]; then
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'Type in the name for your container'
 	echo -e '###################################################################################################################################################\e[0m'
@@ -104,4 +89,26 @@ else
 	echo 'If you decide to run the conatiner at a later time just run this installation script again.'
 	echo -e '###################################################################################################################################################\e[0m'
 fi
-
+}
+echo -e '\e[92m###################################################################################################################################################'
+echo -e 'This script is intended on helping you setup and run a GETH ETC Node in a Docker container '
+echo -e 'This will allow you to easily and seperatly run multiple instances of the GETH ETC Node on one machine with specific ports'
+echo -e '###################################################################################################################################################\e[0m'
+echo
+#Ask if user wants to install docker
+echo -e '\e[92m###################################################################################################################################################'
+echo -e 'Are we installing Docker?:yN'
+echo -e '###################################################################################################################################################\e[0m'
+read -n 1 installingDocker
+installDocker
+echo -e '\e[92m###################################################################################################################################################'
+echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
+echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
+echo -e '###################################################################################################################################################\e[0m'
+read -n 1 instType
+buildImage
+echo -e '\e[92m###################################################################################################################################################'
+echo 'Would you like to run the container now? "yN"'
+echo -e '###################################################################################################################################################\e[0m'
+read -n 1 runContainer
+startContainer
