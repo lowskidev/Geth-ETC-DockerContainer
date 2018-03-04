@@ -5,7 +5,7 @@ Docker Container containing - Classic Ethereum Geth Node Software compiled with 
 
 **Quickest way to spin up a container is:**
 
-`git clone https://github.com/DialogueSolutions/bakon-Geth-ETC-DockerContainer.git`
+`git clone https://github.com/DialogueSolutions/Geth-ETC-DockerContainer.git`
 
 Afterwards:
 `cd bakon-Geth-ETC-DockerContainer`
