@@ -1,10 +1,15 @@
 #!/bin/bash
 #Functions
 function installDocker(){
-	if [[ $installingDocker == 'y' ]]; then	
+	#Ask if docker is Ubuntu or CentOs
+	echo -e '\e[92m###################################################################################################################################################'
+	echo -e 'Install docker for Ubuntu or CentOs?:U/C'
+	echo -e '###################################################################################################################################################\e[0m'	
+	read -n 1 osType
+	if [[ $osType == 'u' ]]; then
 		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Installing Docker'
-		echo -e '#################################################\e[0m'
+		echo 'Installing Docker for Ubuntu'
+		echo -e '###################################################################################################################################################\e[0m'
 		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
 		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
 		sudo apt-get update &&
@@ -20,12 +25,27 @@ function installDocker(){
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'Docker CE succesfully installed'
 		echo -e '###################################################################################################################################################\e[0m'
-	else
+	elif [[ $osType == 'c' ]]; then
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Installing Docker for CentOs 7'
+		echo -e '###################################################################################################################################################\e[0m'
+		sudo yum install -y yum-utils \
+			 device-mapper-persistent-data \
+			 lvm2 && 
+		sudo yum-config-manager \
+			--add-repo \
+			https://download.docker.com/linux/centos/docker-ce.repo
+		sudo yum -y install docker-ce &&
+		sudo systemctl enable docker &&
+		sudo systemctl start docker &&
+		sudo groupadd docker &&
+		sudo usermod -aG docker $USER
 		echo
 		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Ommiting Docker Install'
+		echo 'Docker CE succesfully installed'
 		echo -e '###################################################################################################################################################\e[0m'
-		echo
+	else
+		installDocker
 	fi
 }
 function buildImage(){
@@ -34,10 +54,13 @@ function buildImage(){
 		sudo docker build -t ${imageName,,} .
 	else
 		sudo docker pull bakon3/etcnode:v.08
+		imageName = 'bakon3/etcnode:v.08'
 	fi
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Image ' imageName 'has been created'
+	echo -e '###################################################################################################################################################\e[0m'
 }
 function startContainer(){
-	if [[ $runContainer == 'y' ]]; then
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'Type in the name for your container'
 	echo -e '###################################################################################################################################################\e[0m'
@@ -77,7 +100,7 @@ function startContainer(){
 	else
 		sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
 	fi
-	
+
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
 	echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName 
@@ -85,11 +108,6 @@ function startContainer(){
 	echo 'Next time you run install.sh and re use the same container name you did before you will not lose any sycned data.'
 	echo -e '###################################################################################################################################################\e[0m'
 	sudo docker ps
-else
-	echo -e '\e[92m###################################################################################################################################################'
-	echo 'If you decide to run the conatiner at a later time just run this installation script again.'
-	echo -e '###################################################################################################################################################\e[0m'
-fi
 }
 echo -e '\e[92m###################################################################################################################################################'
 echo -e 'This script is intended on helping you setup and run a GETH ETC Node in a Docker container '
@@ -101,15 +119,31 @@ echo -e '\e[92m#################################################################
 echo -e 'Are we installing Docker?:yN'
 echo -e '###################################################################################################################################################\e[0m'
 read -n 1 installingDocker
-installDocker
+if [[ $installingDocker == 'y' ]]; then
+	installDocker
+else
+	echo
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Ommiting Docker Install'
+	echo -e '###################################################################################################################################################\e[0m'
+	echo
+fi
+#Ask how to create image for container
 echo -e '\e[92m###################################################################################################################################################'
 echo 'Would you like to setup GETH ETC Node container from Docker HUB Image or build from Dockerfile?'
 echo 'Chosing "d" will build from dockerfile, chosing "i" will build from Docker Hub Image(Much Faster)'
 echo -e '###################################################################################################################################################\e[0m'
 read -n 1 instType
 buildImage
+#Run Container
 echo -e '\e[92m###################################################################################################################################################'
 echo 'Would you like to run the container now? "yN"'
 echo -e '###################################################################################################################################################\e[0m'
 read -n 1 runContainer
-startContainer
+if [[ $runContainer == 'y' ]]; then
+	startContainer
+else
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'If you decide to run the conatiner at a later time just run this installation script again, and use the same image name as before'
+	echo -e '###################################################################################################################################################\e[0m'
+fi
