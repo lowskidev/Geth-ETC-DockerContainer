@@ -132,19 +132,31 @@ function startContainer(){
 		fi
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
-		echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName
+		echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName 
 		echo 'If for any reason you need to remove the container with docker rm '$containerName
-		echo 'Next time you run install.sh and re use the same container name you did before you will not lose any sycned data.'
+		echo 'Next time you run install.sh and reuse the same container name you did before you will not lose any sycned data.'
 		echo -e '###################################################################################################################################################\e[0m'
 		sudo docker ps
+		echo
+		echo
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'CONTAINER NETWORK INFORMATION'
+		echo 'Container External IP Address: '$wanip
+		echo 'Container Local IP Address: '$lanip
+		echo 'Container Discovery Port: '$gethPort
+		echo 'Container RPC API Port: '$rpcPort
+		echo -e '###################################################################################################################################################\e[0m'
 	else
 		echo -e '\e[92m###################################################################################################################################################'
-		echo 'If you got to this point you should already have n image build. You can check your images by typing in "sudo docker images"'
-		echo 'If you already have a docker image build from previously running this instlall.sh'
+		echo 'If you got to this point you should already have an image build. You can check your images by typing in "sudo docker images"'
+		echo 'If you already have a docker image build from previously running instlall.sh'
 		echo 'You can just skip straight to running a new container'
 		echo -e '###################################################################################################################################################\e[0m'
 	fi
 }
+#Get Container IP
+wanip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+lanip=$(hostname -I | head -n1 | cut -d " " -f1)
 #Start Input
 echo -e '\e[92m###################################################################################################################################################'
 echo -e 'This script is intended on helping you setup and run a GETH ETC Node in a Docker container '
@@ -169,3 +181,4 @@ echo -e '\e[92m#################################################################
 echo 'SPINNING UP NEW CONTAINER'
 echo -e '###################################################################################################################################################\e[0m'
 startContainer
+
