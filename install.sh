@@ -73,13 +73,12 @@ echo -e '\e[92m#################################################################
 		read -p 'Enter name for docker image: ' imageName
 		sudo docker build -t ${imageName,,} .
 		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Image ' $imageName 'has been created'
+		echo 'Image '${imageName,,}' has been created'
 		echo -e '###################################################################################################################################################\e[0m'
 	elif [[ $instType == 'i' ]]; then
-		sudo docker pull bakon3/etcnode:v.08
-		imageName = 'bakon3/etcnode:v.08'
+		sudo docker pull bakon3/etcnode
 		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Image ' $imageName 'has been created'
+		echo 'Image bakon3/etcnode has been pulled'
 		echo -e '###################################################################################################################################################\e[0m'
 	else
 		buildImage
@@ -112,7 +111,8 @@ function startContainer(){
 		echo 'Creating directorioes and startGeth.sh file'
 		echo -e '###################################################################################################################################################\e[0m'
 		mkdir -pv $HOME/.ethereum-classic/$containerName &&
-		touch $HOME/.ethereum-classic/$containerName/startGeth.sh
+		rm $HOME/.ethereum-classic/$containerName/startGeth.sh
+		touch $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 		chmod 755 $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 		#Create startGeth File
 		echo '#!/bin/sh' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
@@ -128,11 +128,11 @@ function startContainer(){
 		if [[ $instType == 'd' ]]; then
 			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
 		else
-			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode:v.08
+			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
 		fi
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
-		echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName 
+		echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName
 		echo 'If for any reason you need to remove the container with docker rm '$containerName
 		echo 'Next time you run install.sh and re use the same container name you did before you will not lose any sycned data.'
 		echo -e '###################################################################################################################################################\e[0m'
@@ -169,4 +169,3 @@ echo -e '\e[92m#################################################################
 echo 'SPINNING UP NEW CONTAINER'
 echo -e '###################################################################################################################################################\e[0m'
 startContainer
-
