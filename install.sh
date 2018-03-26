@@ -95,11 +95,11 @@ function selectChain(){
 	fi
 	echo $chain
 }
-function setupPorts(){
+function setupDiecoveryPort(){
 	echo -e '\e[92m###################################################################################################################################################'
-	echo 'Select port on which GETH will listen for peers, port should be 4 - 5 digits long'
+	echo 'Select wich port will to expose for GETH 30303, port should be 4 - 5 digits long'
 	echo 'Ports in range 1-1023 are the privileged ones so dont use them 1-65535 are available.'
-	echo 'Default port is 30303'
+	echo 'Default Discovery port for GETH is 30303'
 	echo 'PLEASE USE INTEGERS ONLY'
 	echo -e '###################################################################################################################################################\e[0m'
 	read -p 'Container GETH Port: ' gethPort
@@ -107,6 +107,172 @@ function setupPorts(){
 		setupPorts
 	fi
 	echo $gethPort
+}
+function setupRPC(){
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Would you like to expose the RPC port(8545 default) on the container?'
+	echo 'Exposing this PORT will give you access to the RPC end point of GETH inside that container'
+	echo -e '###################################################################################################################################################\e[0m'
+	read -p 'Expose RPC Port y/N?: ' exposeRPC
+		if [[ $exposeRPC == 'y' ]]; then
+			echo -e '\e[92m###################################################################################################################################################'
+			echo 'Select wich port # to expose'
+			echo 'Ports in range 1-1023 are the privileged ones so dont use them 1-65535 are available.'
+			echo 'Default port is 8545'
+			echo 'PLEASE USE INTEGERS ONLY'
+			echo -e '###################################################################################################################################################\e[0m'
+			read -p 'Container GETH Port: ' rpcPort
+			if ! [[ "$rpcPort" =~ ^[0-9]+$ ]]; then
+				setupRPC
+			fi
+			echo $rpcPort
+			echo
+			echo -e '\e[92m###################################################################################################################################################'
+			echo 'Would you like to setup CORS for the RPC API endpoint?Leave blank do disable CORS'
+			echo 'This allows you to remotely connect to the NODEs RPC API'
+			echo 'Default will not setup CORS and NODE RPC Wont be available outside of the container if field left blank.'
+			echo 'You can use "*" to set up wild card CORS'
+			echo 'LEAVE BLANK TO DISABLE CORS'
+			echo -e '###################################################################################################################################################\e[0m'
+			read -p 'CORS Access: ' CORS
+			if [[ $CORS == '' ]]; then
+				CORS='false'
+			fi
+	    else
+			echo -e '\e[92m###################################################################################################################################################'
+			echo 'RPC Port will not be EXPOSED' 
+			echo -e '###################################################################################################################################################\e[0m'
+		fi
+}
+function createDirectories(){
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Creating directorioes, startGeth.sh, app.json for netstats api file'
+	echo -e '###################################################################################################################################################\e[0m'
+	mkdir -pv $HOME/.ethereum-classic/$containerName &&
+	rm $HOME/.ethereum-classic/$containerName/startGeth.sh
+	touch $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	chmod 755 $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	rm $HOME/.ethereum-classic/$containerName/app.json &&
+	touch $HOME/.ethereum-classic/$containerName/app.json
+}
+function createStartGeth(){		
+	#Create startGeth File
+	echo '#!/bin/sh' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo '#If you know what you are doing feel free to write your custom start geth commands here' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	#Start Netstats with PM2
+	echo 'cd $HOME/etc-net-intelligence-api &&' 	>> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo 'pm2 start /.ethereum-classic/app.json &&'	>> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	echo '' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+	#Start Geth
+	echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&    
+	if [[ $exposeRPC == 'y' ]]; then 
+		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --rpcaddr=0.0.0.0 --rpccorsdomain='$CORS' --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh
+	else
+		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh
+	fi
+}
+function createAppJSON(){
+	if [[ $chain == 'morden' ]]; then
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Creating app.json files' 
+		echo -e '###################################################################################################################################################\e[0m'
+		echo '[' 													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '{' 													>>  $HOME/.ethereum-classic/$containerName/app.json 	
+		echo    '"name"              : "etc-netstats-api",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"script"            : "app.js",'			 		>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"merge_logs"        : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"watch"             : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"max_restarts"      : 10,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"exec_interpreter"  : "node",' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"exec_mode"         : "fork_mode",' 				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"env":' 											>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '{' 												>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"NODE_ENV"        : "production",'				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"RPC_HOST"        : "localhost",'				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"RPC_PORT"        : "8545",'						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"LISTENING_PORT"  : "30303",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"INSTANCE_NAME"   : "'$containerName'",'			>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"CONTACT_DETAILS" : "",'							>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"WS_SERVER"       : "mordenstats.ethertrack.io",'>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"WS_SECRET"       : "crazyBakon",'				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"VERBOSITY"       : 2'							>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo ']'													>>  $HOME/.ethereum-classic/$containerName/app.json
+	else
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Creating app.json files' 
+		echo -e '###################################################################################################################################################\e[0m'
+		echo '[' 													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '{' 													>>  $HOME/.ethereum-classic/$containerName/app.json 	
+		echo    '"name"              : "etc-netstats-api",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"script"            : "app.js",'			 		>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"merge_logs"        : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"watch"             : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"max_restarts"      : 10,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"exec_interpreter"  : "node",' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"exec_mode"         : "fork_mode",' 				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"env":' 											>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '{' 												>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"NODE_ENV"        : "production",'				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"RPC_HOST"        : "localhost",'				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"RPC_PORT"        : "8545",'						>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"LISTENING_PORT"  : "30303",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"INSTANCE_NAME"   : "'$containerName'",'			>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"CONTACT_DETAILS" : "",'							>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"WS_SERVER"       : "etcstats.ethertrack.io",'	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"WS_SECRET"       : "crazyBakon",'				>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"VERBOSITY"       : 2'							>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo ']'													>>  $HOME/.ethereum-classic/$containerName/app.json
+	fi
+}
+function dockerRUN(){
+	if [[ $chain == 'morden' ]]; then
+		echo -e '\e[92m###################################################################################################################################################'
+		echo 'Since you are running the Morden Chain Container you can view its stats on'
+		echo 'http://mordenstats.ethertrack.io/ just look for your container Name: '$containerName
+		echo -e '###################################################################################################################################################\e[0m'
+	fi
+	sleep 5
+	echo
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'CONTAINER NETWORK INFORMATION'
+	echo 'Container External IP Address: '$wanip
+	echo 'Container Local IP Address: '$lanip
+	echo 'Container Discovery Port: '$gethPort
+	echo 'Container RPC API Port: '$rpcPort
+	echo -e '###################################################################################################################################################\e[0m'
+	sleep 5
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Your new Container ' $containerName ' for the network ' $chain ' is about to be launched'
+	echo 'THANK YOU FOR SUPPORTING THE ETHEREUM CLASSIC NETWORK'
+	echo -e '###################################################################################################################################################\e[0m'
+	sleep 5
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Starting Container in attached mode.'
+	echo 'Press CTRL-Q and CTRL-P at the same time to exit without shutting off the container'
+	echo -e '###################################################################################################################################################\e[0m'
+	sleep 5
+	#Run the container based on above setup
+	if [[ $instType == 'd' ]]; then
+		if [[ $exposeRPC == 'y' ]]; then
+			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+		else
+			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+		fi
+	else
+		if [[ $exposeRPC == 'y' ]]; then
+			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
+		else
+			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
+		fi
+	fi	
 }
 function startContainer(){
 	echo -e '\e[92m###################################################################################################################################################'
@@ -119,53 +285,28 @@ function startContainer(){
 		echo -e '###################################################################################################################################################\e[0m'
 		read -p 'Container Name: ' containerName
 		echo
-		setupPorts
+		setupDiecoveryPort
+		echo
+		setupRPC
 		echo
 		selectChain
 		echo
-		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Creating directorioes, startGeth.sh, app.json for netstats api file'
-		echo -e '###################################################################################################################################################\e[0m'
-		mkdir -pv $HOME/.ethereum-classic/$containerName &&
-		rm $HOME/.ethereum-classic/$containerName/startGeth.sh
-		touch $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		chmod 755 $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		#Create startGeth File
-		echo '#!/bin/sh' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		echo '#If you know what you are doing feel free to write your custom start geth commands here' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		echo '' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-#		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --rpc --cache=1024 --rpcaddr=0.0.0.0 --rpccorsdomain="*" --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --rpc --cache=1024 --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+		createDirectories
 		echo
-		echo -e '\e[92m#################################################'
-		echo 'Starting Container'
-		echo -e '#################################################\e[0m'
-		if [[ $instType == 'd' ]]; then
-#			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
-			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
-		else
-#			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
-			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
-		fi
+		createAppJSON
+		echo
+		createStartGeth
+		echo
+		dockerRUN
+		echo
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
-		echo 'Other wise if you see your container running you can attach to it by running docker attach '$containerName 
+		echo 'Otherwise if you see your container running you can re-attach to it by running docker attach '$containerName 
 		echo 'If for any reason you need to remove the container with docker rm '$containerName
-		echo 'Next time you run install.sh and reuse the same container name you did before you will not lose any sycned data.'
+		echo 'Next time you run install.sh and reuse the same container name you did before and you will not lose any sycned blockchain data.'
 		echo -e '###################################################################################################################################################\e[0m'
 		sudo docker ps
 		echo
-		echo
-		echo -e '\e[92m###################################################################################################################################################'
-		echo 'CONTAINER NETWORK INFORMATION'
-		echo 'Container External IP Address: '$wanip
-		echo 'Container Local IP Address: '$lanip
-		echo 'Container Discovery Port: '$gethPort
-#		echo 'Container RPC API Port: '$rpcPort
-
-		echo -e '###################################################################################################################################################\e[0m'
 	else
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'If you got to this point you should already have an image build. You can check your images by typing in "sudo docker images"'
