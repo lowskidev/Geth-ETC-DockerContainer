@@ -56,7 +56,18 @@ echo 'Copying GETH to bin'
 echo -e '#################################################\e[0m'
 cp geth /usr/local/bin/ &&
 
-#clean up
+#Cloning Netstats API
+echo -e '\e[92m#################################################'
+echo 'Cloning Netstats API and installing PM2'
+echo -e '#################################################\e[0m'
+#install latest PM2 and etc-net-intelligence-api
+cd $HOME &&
+git clone https://github.com/DialogueSolutions/etc-net-intelligence-api etc-net-intelligence-api &&
+cd etc-net-intelligence-api &&
+npm install &&
+npm install pm2 -g &&
+
+#Clean up
 echo -e '\e[92m#################################################'
 echo 'Cleaning up Image after install'
 echo -e '#################################################\e[0m'

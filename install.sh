@@ -84,6 +84,30 @@ echo -e '\e[92m#################################################################
 		buildImage
 	fi
 }
+function selectChain(){
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Will this be a Mainnet or Morden(Test) node?'
+	echo 'Default: Mainnet.'
+	echo -e '###################################################################################################################################################\e[0m'
+	read -p 'Mainenet or Morden?:mainnet/morden ' chain
+	if [[ $chain != 'morden' ]]; then
+		chain='mainnet'
+	fi
+	echo $chain
+}
+function setupPorts(){
+	echo -e '\e[92m###################################################################################################################################################'
+	echo 'Select port on which GETH will listen for peers, port should be 4 - 5 digits long'
+	echo 'Ports in range 1-1023 are the privileged ones so dont use them 1-65535 are available.'
+	echo 'Default port is 30303'
+	echo 'PLEASE USE INTEGERS ONLY'
+	echo -e '###################################################################################################################################################\e[0m'
+	read -p 'Container GETH Port: ' gethPort
+	if ! [[ "$gethPort" =~ ^[0-9]+$ ]]; then
+		setupPorts
+	fi
+	echo $gethPort
+}
 function startContainer(){
 	echo -e '\e[92m###################################################################################################################################################'
 	echo 'Would you like to run the container now? "yN"'
@@ -95,24 +119,12 @@ function startContainer(){
 		echo -e '###################################################################################################################################################\e[0m'
 		read -p 'Container Name: ' containerName
 		echo
-		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Select port on which GETH will listen for peers, port should be 4 - 5 digits long'
-		echo '1-65535 are available, and ports in range 1-1023 are the privileged ones so dont use them'
-		echo -e '###################################################################################################################################################\e[0m'
-		read -p 'Container GETH Port: ' gethPort
+		setupPorts
+		echo
+		selectChain
 		echo
 		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Will this be a Mainnet or Morden(Test) node?Default Main. :M/t'
-		echo -e '###################################################################################################################################################\e[0m'
-		read -p chain
-		if [[ $chain == 't' ]]; then
-			chain = 'morden'
-        else
-			chain = 'mainnet'
-		fi
-		echo
-		echo -e '\e[92m###################################################################################################################################################'
-		echo 'Creating directorioes and startGeth.sh file'
+		echo 'Creating directorioes, startGeth.sh, app.json for netstats api file'
 		echo -e '###################################################################################################################################################\e[0m'
 		mkdir -pv $HOME/.ethereum-classic/$containerName &&
 		rm $HOME/.ethereum-classic/$containerName/startGeth.sh
@@ -124,15 +136,18 @@ function startContainer(){
 		echo '###############################################################################################' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 		echo '' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 		echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
-		echo 'geth --sputnikvm --fast --identity='$containerName' --rpc --cache=1024 --rpcaddr=0.0.0.0 --rpccorsdomain="*" --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+#		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --rpc --cache=1024 --rpcaddr=0.0.0.0 --rpccorsdomain="*" --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
+		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --rpc --cache=1024 --maxpeers=55 --verbosity=6' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 		echo
 		echo -e '\e[92m#################################################'
 		echo 'Starting Container'
 		echo -e '#################################################\e[0m'
 		if [[ $instType == 'd' ]]; then
-			sudo docker run -tid --chain $chain --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+#			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
 		else
-			sudo docker run -tid --chain $chain --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
+#			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
+			sudo docker run -tid --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
 		fi
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'If you received an error about docker starting at this point, Just correct the inputs it has an issue with and run ./install.sh again.'
@@ -148,7 +163,7 @@ function startContainer(){
 		echo 'Container External IP Address: '$wanip
 		echo 'Container Local IP Address: '$lanip
 		echo 'Container Discovery Port: '$gethPort
-		echo 'Container RPC API Port: '$rpcPort
+#		echo 'Container RPC API Port: '$rpcPort
 
 		echo -e '###################################################################################################################################################\e[0m'
 	else
@@ -186,3 +201,4 @@ echo -e '\e[92m#################################################################
 echo 'SPINNING UP NEW CONTAINER'
 echo -e '###################################################################################################################################################\e[0m'
 startContainer
+
