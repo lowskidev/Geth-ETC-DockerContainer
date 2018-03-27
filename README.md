@@ -1,6 +1,14 @@
 # Geth-ETC-DockerContainer
 Docker Container containing - Classic Ethereum Geth Node Software compiled with latest version of SputnikVM
 
+```
+**Ethereum Go (Ethereum Classic Blockchain)**
+
+*Official Go language implementation of the Ethereum protocol supporting the original chain. 
+Ethereum Classic (ETC) offers a censorship-resistant and powerful application platform for 
+developers in parallel to Ethereum (ETHF), while differentially rejecting the DAO bailout.*
+```
+
 *NOTE*: This version only supports linux docker hosts, windows version coming soon.
 
 **Quickest way to spin up a container is:**
