@@ -1,0 +1,12 @@
+Latest update includes:
+
+**V.0.0.5**
+* Chose weather to run a ETC Node for Mainnet or Morden chain
+* Setup Custom RPC API PORT for container and setup CORS on GETH.
+* Automatically report to http://mordenstats.ethertrack.io/ if running Morden chain
+
+install.sh to walk you through setup on CentOS7 or Ubuntu16 in three easy steps.
+
+`git clone https://github.com/DialogueSolutions/Geth-ETC-DockerContainer.git`
+` cd Geth-ETC-DockerContainer`
+`./install.sh`
