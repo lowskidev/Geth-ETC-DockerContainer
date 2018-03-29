@@ -263,15 +263,15 @@ function dockerRUN(){
 	#Run the container based on above setup
 	if [[ $instType == 'd' ]]; then
 		if [[ $exposeRPC == 'y' ]]; then
-			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+			sudo docker run -ti --name $containerName --restart unless-stopped -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
 		else
-			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
+			sudo docker run -ti --name $containerName --restart unless-stopped -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ ${imageName,,}
 		fi
 	else
 		if [[ $exposeRPC == 'y' ]]; then
-			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
+			sudo docker run -ti --name $containerName --restart unless-stopped -p $gethPort:30303/tcp -p $gethPort:30303/udp -p $rpcPort:8545/tcp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
 		else
-			sudo docker run -ti --name $containerName -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
+			sudo docker run -ti --name $containerName --restart unless-stopped -p $gethPort:30303/tcp -p $gethPort:30303/udp --mount type=bind,source=$HOME/.ethereum-classic/$containerName,target=/.ethereum-classic/ bakon3/etcnode
 		fi
 	fi	
 }
