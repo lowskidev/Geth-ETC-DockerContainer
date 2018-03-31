@@ -10,6 +10,7 @@ echo -e '\e[92m#################################################'
 echo 'Download Latest sputnikVM version from source'
 echo -e '#################################################\e[0m'
 cd $HOME/go/src/github.com/ethereumproject/ &&
+rm -rf sputnikvm-ffi/
 git clone https://github.com/ethereumproject/sputnikvm-ffi &&
 cd sputnikvm-ffi/c/ffi &&
 
