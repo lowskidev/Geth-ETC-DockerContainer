@@ -180,58 +180,58 @@ function createAppJSON(){
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'Creating app.json files' 
 		echo -e '###################################################################################################################################################\e[0m'
-		echo '[' 													>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo  '{' 													>>  $HOME/.ethereum-classic/$containerName/app.json 	
-		echo    '"name"              : "etc-netstats-api",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"script"            : "app.js",'			 		>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"merge_logs"        : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"watch"             : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"max_restarts"      : 10,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"exec_interpreter"  : "node",' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo '[' 								>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '{' 								>>  $HOME/.ethereum-classic/$containerName/app.json 	
+		echo    '"name"              : "etc-netstats-api",' 			>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"script"            : "etc-net-intelligence-api/app.js",'	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 			>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"merge_logs"        : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"watch"             : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"max_restarts"      : 10,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"exec_interpreter"  : "node",' 				>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"exec_mode"         : "fork_mode",' 				>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"env":' 											>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '{' 												>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"env":' 							>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '{' 								>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"NODE_ENV"        : "production",'				>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"RPC_HOST"        : "localhost",'				>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"RPC_PORT"        : "8545",'						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"LISTENING_PORT"  : "30303",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"RPC_PORT"        : "8545",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"LISTENING_PORT"  : "30303",'				>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"INSTANCE_NAME"   : "'$containerName'",'			>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"CONTACT_DETAILS" : "",'							>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"WS_SERVER"       : "mordenstats.ethertrack.io",'>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"CONTACT_DETAILS" : "",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"WS_SERVER"       : "mordenstats.ethertrack.io",'		>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"WS_SECRET"       : "crazyBakon",'				>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"VERBOSITY"       : 2'							>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo  '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo ']'													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"VERBOSITY"       : 2'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '}'								>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '}'								>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo ']'								>>  $HOME/.ethereum-classic/$containerName/app.json
 	else
 		echo -e '\e[92m###################################################################################################################################################'
 		echo 'Creating app.json files' 
 		echo -e '###################################################################################################################################################\e[0m'
-		echo '[' 													>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo  '{' 													>>  $HOME/.ethereum-classic/$containerName/app.json 	
-		echo    '"name"              : "etc-netstats-api",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"script"            : "app.js",'			 		>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 		>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"merge_logs"        : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"watch"             : false,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"max_restarts"      : 10,' 						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"exec_interpreter"  : "node",' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo '[' 								>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '{' 								>>  $HOME/.ethereum-classic/$containerName/app.json 	
+		echo    '"script"            : "etc-net-intelligence-api/app.js",' 	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"script"            : "app.js",'			 	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 			>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"merge_logs"        : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"watch"             : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"max_restarts"      : 10,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"exec_interpreter"  : "node",' 				>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"exec_mode"         : "fork_mode",' 				>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"env":' 											>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '{' 												>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"env":' 							>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '{' 								>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"NODE_ENV"        : "production",'				>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"RPC_HOST"        : "localhost",'				>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"RPC_PORT"        : "8545",'						>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"LISTENING_PORT"  : "30303",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"RPC_PORT"        : "8545",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"LISTENING_PORT"  : "30303",'				>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"INSTANCE_NAME"   : "'$containerName'",'			>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"CONTACT_DETAILS" : "",'							>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"WS_SERVER"       : "etcstats.ethertrack.io",'	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"CONTACT_DETAILS" : "",'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"WS_SERVER"       : "etcstats.ethertrack.io",'		>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo      '"WS_SECRET"       : "crazyBakon",'				>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo      '"VERBOSITY"       : 2'							>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo  '}'													>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo ']'													>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo      '"VERBOSITY"       : 2'					>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '}'								>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo  '}'								>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo ']'								>>  $HOME/.ethereum-classic/$containerName/app.json
 	fi
 }
 function dockerRUN(){
