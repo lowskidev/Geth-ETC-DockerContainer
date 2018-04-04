@@ -1,6 +1,8 @@
 # Geth-ETC-DockerContainer
 Docker Container containing - Classic Ethereum Geth Node Software compiled with latest version of SputnikVM
 
+**You do not have to have Docker installed, the included *install.sh* in this repo will guide you through the install of latest Docker if needed, on both Ubuntu 16.04 and CentOS7**
+
 ```
 **Ethereum Go (Ethereum Classic Blockchain)**
 
