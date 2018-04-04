@@ -156,7 +156,8 @@ function createDirectories(){
 	touch $HOME/.ethereum-classic/$containerName/app.json
 }
 function createStartGeth(){
-	bootnodes='--bootnodes enode://1fac84e8fe252d63764563f4f526323393b52aaaf832693f7a8a1637f6920311d7d04a7cb91945273e6c644d5c3b01a6bf8a172ae653c918e1bf8eb79e7e6baf@94.152.212.32:40404,enode://2ebc9ab101ec8bb98ec114792fe28e85dea1daf9213b5425ada2619bf3d2f860481cf77e0c222b60e3ab37935c5258385843a7ef0f232081177280ea02e45c8b@144.202.111.197:30303'
+	#Declare morden boot nodes.
+	#mordenBootnodes='--bootnodes enode://1fac84e8fe252d63764563f4f526323393b52aaaf832693f7a8a1637f6920311d7d04a7cb91945273e6c644d5c3b01a6bf8a172ae653c918e1bf8eb79e7e6baf@94.152.212.32:40404,enode://2ebc9ab101ec8bb98ec114792fe28e85dea1daf9213b5425ada2619bf3d2f860481cf77e0c222b60e3ab37935c5258385843a7ef0f232081177280ea02e45c8b@144.202.111.197:30303'
 	#Create startGeth File
 	echo '#!/bin/sh' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
 	echo '#If you know what you are doing feel free to write your custom start geth commands here' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&
@@ -169,9 +170,9 @@ function createStartGeth(){
 	#Start Geth
 	echo '#Start Geth' >> $HOME/.ethereum-classic/$containerName/startGeth.sh &&    
 	if [[ $exposeRPC == 'y' ]]; then 
-		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --rpcaddr=0.0.0.0 --rpccorsdomain='$CORS' --maxpeers=55 --verbosity=6 '$bootnodes' ' >> $HOME/.ethereum-classic/$containerName/startGeth.sh
+		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --rpcaddr=0.0.0.0 --rpccorsdomain='$CORS' --maxpeers=55 --verbosity=6 ' >> $HOME/.ethereum-classic/$containerName/startGeth.sh
 	else
-		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --maxpeers=55 --verbosity=6 '$bootnodes' ' $ >> $HOME/.ethereum-classic/$containerName/startGeth.sh
+		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --maxpeers=55 --verbosity=6 ' $ >> $HOME/.ethereum-classic/$containerName/startGeth.sh
 	fi
 }
 function createAppJSON(){
