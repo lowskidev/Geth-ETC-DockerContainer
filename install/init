@@ -62,7 +62,7 @@ echo 'Cloning Netstats API and installing PM2'
 echo -e '#################################################\e[0m'
 #install latest PM2 and etc-net-intelligence-api
 cd $HOME &&
-git clone https://github.com/ethernode/etc-net-intelligence-api etc-net-intelligence-api &&
+git clone https://github.com/ethernodeio/etc-net-intelligence-api.git etc-net-intelligence-api &&
 cd etc-net-intelligence-api &&
 npm install &&
 npm install pm2 -g &&
