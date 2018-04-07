@@ -15,7 +15,7 @@ developers in parallel to Ethereum (ETHF), while differentially rejecting the DA
 
 **Quickest way to spin up a container is:**
 
-`git clone https://github.com/DialogueSolutions/Geth-ETC-DockerContainer.git`
+`git clone https://github.com/ethernodeio/Geth-ETC-DockerContainer.git`
 
 `cd Geth-ETC-DockerContainer`
 
