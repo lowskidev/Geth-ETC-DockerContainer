@@ -183,7 +183,7 @@ function createAppJSON(){
 		echo '[' 								>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo  '{' 								>>  $HOME/.ethereum-classic/$containerName/app.json 	
 		echo    '"name"              : "etc-netstats-api",' 			>>  $HOME/.ethereum-classic/$containerName/app.json
-		echo    '"script"            : "etc-net-intelligence-api/app.js",'	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"script"            : "/root/etc-net-intelligence-api/app.js",'	>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 			>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"merge_logs"        : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"watch"             : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
@@ -210,7 +210,7 @@ function createAppJSON(){
 		echo -e '###################################################################################################################################################\e[0m'
 		echo '[' 								>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo  '{' 								>>  $HOME/.ethereum-classic/$containerName/app.json 	
-		echo    '"script"            : "etc-net-intelligence-api/app.js",' 	>>  $HOME/.ethereum-classic/$containerName/app.json
+		echo    '"script"            : "/root/etc-net-intelligence-api/app.js",' 	>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"script"            : "app.js",'			 	>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"log_date_format"   : "YYYY-MM-DD HH:mm Z",' 			>>  $HOME/.ethereum-classic/$containerName/app.json
 		echo    '"merge_logs"        : false,' 					>>  $HOME/.ethereum-classic/$containerName/app.json
