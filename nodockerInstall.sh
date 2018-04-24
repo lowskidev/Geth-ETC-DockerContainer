@@ -75,3 +75,10 @@ git clone https://github.com/ethernodeio/etc-net-intelligence-api.git etc-net-in
 cd etc-net-intelligence-api &&
 npm install &&
 npm install pm2 -g
+
+#Instruction
+echo -e '\e[92m#################################################'
+echo 'You should now be able to launch GETH Example:'
+echo 'geth --sputnikvm --fast --chain=morden --identity=NameOfNode --cache=1024 --rpc --rpcaddr=0.0.0.0 --rpccorsdomain=* --maxpeers=100 --verbosity=6'
+echo 'The above example command will run GETH with sputnikVM syncing the ETC Morden test chain, this will also allow remote access to the RPC API on default port:8545'
+echo -e '#################################################\e[0m'
