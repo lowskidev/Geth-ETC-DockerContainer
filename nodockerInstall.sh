@@ -1,26 +1,26 @@
-!#/bin/bash
+sudo !#/bin/bash
 
 #Update everything before isntalling any extra repositories or packages
-apt-get update -y &&
-apt-get upgrade -y &&
-apt-get install -y build-essential &&
-apt-get install -y git wget curl nano redis-server nginx software-properties-common python-software-properties rustc cargo apt-transport-https &&
+sudo apt-get update -y &&
+sudo apt-get upgrade -y &&
+sudo apt-get install -y build-essential &&
+sudo apt-get install -y git wget curl nano redis-server nginx software-properties-common python-software-properties rustc cargo apt-transport-https &&
 
 #Add mongoDB pbk
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5 &&
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5 &&
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.6.list &&
-apt-get update -y &&
-apt-get install -y mongodb-org &&
-apt-get install -y mongodb &&
+sudo apt-get update -y &&
+sudo apt-get install -y mongodb-org &&
+sudo apt-get install -y mongodb &&
 
 #Install latest nodejs
 curl -sL https://deb.nodesource.com/setup_9.x | bash - &&
-apt-get install -y nodejs &&
+sudo apt-get install -y nodejs &&
 
 #Install latest golang on Ubuntu
-add-apt-repository -y ppa:longsleep/golang-backports &&
-apt-get update -y &&
-apt-get install -y golang-go &&
+sudo add-apt-repository -y ppa:longsleep/golang-backports &&
+sudo apt-get update -y &&
+sudo apt-get install -y golang-go &&
 export GOPATH=$HOME/go &&
 
 #Download latest version of explorer
