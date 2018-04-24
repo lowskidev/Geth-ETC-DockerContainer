@@ -1,5 +1,3 @@
-sudo !#/bin/bash
-
 #Update everything before isntalling any extra repositories or packages
 sudo apt-get update -y &&
 sudo apt-get upgrade -y &&
