@@ -32,7 +32,7 @@ CGO_LDFLAGS="$HOME/go/src/github.com/ethereumproject/sputnikvm-ffi/c/libsputnikv
 echo -e '\e[92m#################################################'
 echo 'Copying GETH to bin'
 echo -e '#################################################\e[0m'
-cp geth /usr/local/bin/
+sudo cp geth /usr/local/bin/
 
 #copy geth runtime to bin folder
 echo -e '\e[92m###########################################################################'
