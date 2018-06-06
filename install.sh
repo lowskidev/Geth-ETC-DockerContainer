@@ -89,7 +89,7 @@ function selectChain(){
 	echo 'Will this be a Mainnet or Morden(Test) node?'
 	echo 'Default: Mainnet.'
 	echo -e '###################################################################################################################################################\e[0m'
-	read -p 'Mainenet or Morden?:mainnet/morden ' chain
+	read -p 'Mainnet or Morden?:mainnet/morden ' chain
 	if [[ $chain != 'morden' ]]; then
 		chain='mainnet'
 	fi
