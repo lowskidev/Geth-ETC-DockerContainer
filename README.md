@@ -10,9 +10,6 @@ Docker Container containing - Classic Ethereum Geth Node Software compiled with 
 Ethereum Classic (ETC) offers a censorship-resistant and powerful application platform for 
 developers in parallel to Ethereum (ETHF), while differentially rejecting the DAO bailout.*
 ```
-NOW WITH GETH 5.2.0
-https://medium.com/etcdev/geth-classic-v5-2-introducing-geth-getaddresstransactions-133c76fa82d1
-
 *NOTE*: This version only supports linux docker hosts, windows version coming soon.
 
 **Quickest way to spin up a container is:**
