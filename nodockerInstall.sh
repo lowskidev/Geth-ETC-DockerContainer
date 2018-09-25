@@ -25,7 +25,7 @@ echo -e '#################################################\e[0m'
 cd $HOME/go/src/github.com/ethereumproject/go-ethereum/ &&
 make cmd/geth
 
-#copy geth runtime to bin folder
+#Copy geth runtime to bin folder
 echo -e '\e[92m#################################################'
 echo 'Copying GETH to bin'
 echo -e '#################################################\e[0m'
