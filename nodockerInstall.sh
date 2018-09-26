@@ -23,7 +23,7 @@ echo -e '\e[92m#################################################'
 echo 'Building GETH with SputnikVM'
 echo -e '#################################################\e[0m'
 cd $HOME/go/src/github.com/ethereumproject/go-ethereum/ &&
-make cmd/geth
+make cmd/geth &&
 
 #Copy geth runtime to bin folder
 echo -e '\e[92m#################################################'
