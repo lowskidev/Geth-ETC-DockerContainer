@@ -1,20 +1,20 @@
 #!/bin/sh
-apt-get update -y &&
-apt-get upgrade -y &&
-apt-get install -y build-essential &&
-apt-get install -y git wget curl nano redis-server nginx software-properties-common python-software-properties rustc cargo &&
+apt update -y &&
+apt upgrade -y &&
+apt install -y build-essential &&
+apt install -y git wget curl nano redis-server nginx software-properties-common python-software-properties rustc cargo &&
 
 #Install latest nodejs
 echo -e '\e[92m#################################################'
 echo -e 'Installing latest NodeJS'
 echo -e '#################################################\e[0m'
 curl -sL https://deb.nodesource.com/setup_9.x | bash - &&
-apt-get install -y nodejs &&
+apt install -y nodejs &&
 
 #Install latest golang on Ubuntu
-sudo add-apt-repository -y ppa:longsleep/golang-backports &&
-sudo apt-get update -y &&
-sudo apt-get install -y golang-go &&
+add-apt-repository -y ppa:longsleep/golang-backports &&
+apt update -y &&
+apt install -y golang-go &&
 export GOPATH=$HOME/go &&
 
 #Download GETH Source
@@ -52,5 +52,5 @@ npm install pm2 -g &&
 echo -e '\e[92m#################################################'
 echo 'Cleaning up Image after install'
 echo -e '#################################################\e[0m'
-apt-get clean &&
+apt clean &&
 rm -rf $HOME/go/
