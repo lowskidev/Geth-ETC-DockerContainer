@@ -172,7 +172,7 @@ function createStartGeth(){
 	if [[ $exposeRPC == 'y' ]]; then 
 		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --rpcaddr=0.0.0.0 --rpccorsdomain='$CORS' --maxpeers=55 --verbosity=6 ' >> $HOME/.ethereum-classic/$containerName/startGeth.sh
 	else
-		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --maxpeers=55 --verbosity=6 ' $ >> $HOME/.ethereum-classic/$containerName/startGeth.sh
+		echo 'geth --chain='$chain' --sputnikvm --fast --identity='$containerName' --cache=1024 --rpc --maxpeers=55 --verbosity=6 ' >> $HOME/.ethereum-classic/$containerName/startGeth.sh
 	fi
 }
 function createAppJSON(){
