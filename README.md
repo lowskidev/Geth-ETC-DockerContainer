@@ -1,3 +1,10 @@
+This is all outdate please follow the instruction on Docker Hubm to run a go-ethereum ETC Node in a Docker container.
+https://hub.docker.com/r/bakon3/etcgethx86
+
+Thank you,
+Ethernode.
+
+
 # Geth-ETC-DockerContainer
 Docker Container containing - Classic Ethereum Geth Node Software compiled with latest version of SputnikVM
 
